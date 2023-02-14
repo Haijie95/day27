@@ -5,11 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.haijie.day27.models.Comment;
 import com.haijie.day27.models.Game;
 import com.haijie.day27.services.GameService;
 
@@ -42,4 +46,11 @@ public class GameController {
         return"details";
     }
     
+    @PostMapping("/game/comment")
+    public String postComment(@RequestBody MultiValueMap<String,String> form){
+        Comment comment = Comment.create(form);
+        String commentId = gameSvc.addComment(comment);
+        System.out.printf(">>>> commentId: %s\n", commentId);
+		return "redirect:/";
+    }
 }
